@@ -1,7 +1,9 @@
+import Game from './game/index.js'
+import './index.module.css'
+
+
 function App() {
-  return (
-    <h1>Hello world!</h1>
-  )
+  return <Game />
 }
 
 export default App
