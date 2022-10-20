@@ -1,9 +1,8 @@
-import Game from './game/index.js'
+import HomeView from './components/homeView/index.js'
 import './index.module.css'
 
-
 function App() {
-  return <Game />
+  return <HomeView />
 }
 
 export default App

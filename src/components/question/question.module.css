@@ -1,0 +1,59 @@
+.tag {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background: coral;
+    color: white;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: none;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 40px;
+    font-family: 'Russo One', sans-serif;
+    width: 600px;
+    line-height: 24px;
+    position: relative;
+}
+
+.categoryCard {
+    background: mediumslateblue;
+    color: white;
+    text-align: center;
+    width: 600px;
+    padding: 40px;
+    border-radius: 8px;
+    font-family: 'Russo One', sans-serif;
+}
+
+.answersContainer {
+    display: flex;
+    width: 600px;
+    flex-wrap: wrap;
+    padding: 20px 0;
+    justify-content: space-between
+}
+
+.answer {
+    background: white;
+    padding: 15px;
+    width:49%;
+    font-family: 'Russo One', sans-serif;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.correct {
+    background: mediumseagreen;
+    color: white;
+}
+
+.wrong {
+    background: indianred;
+    color: white;
+}
