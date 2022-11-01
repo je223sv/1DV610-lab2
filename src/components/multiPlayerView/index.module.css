@@ -1,0 +1,207 @@
+/*
+    Player setup
+*/
+
+.playersContainer {
+    /* background: red; */
+    display: flex;
+    width: 600px;
+    font-family: 'Russo One', sans-serif;
+    user-select: none; 
+}
+
+.playersContainer h2 {
+    color: black;
+}
+
+.playerContainer {
+    background: white;
+    border-radius: 4px;
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    text-transform: uppercase;
+    height: 200px;
+}
+
+.aiContainer {
+    background: white;
+    border-radius: 4px;
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.image {
+    background: #f1f1f1;
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    width: 100%;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.skillSetContainer {
+    /* background: yellow; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 7px;
+}
+
+.skillSetContainer p {
+    width: 100px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.arrowContainer {
+    /* background: white; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.vsContainer {
+    flex: 1;
+    /* font-family: 'Russo One', sans-serif; */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+}
+
+.buttonTwo {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    background: black;
+    color: white;
+}
+
+
+.title {
+    font-size: 48px;
+    margin-bottom: 50px;
+    font-family: 'Russo One', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.smallTitle {
+    font-family: 'Russo One', sans-serif;
+    color: white;
+    letter-spacing: 2px;
+    font-weight: 400;
+}
+
+.button {
+    border: 0;
+    margin: 10px;
+    width: 200px;
+    height: 50px;
+    background: white;
+    color: black;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Russo One', sans-serif;
+}
+
+.buttonContainer {
+    width: 660px;
+    justify-content: center;
+    align-items: center;
+}
+
+.notSelected {
+    background: #ccc;
+    color: #aaa;
+}
+
+
+/* GAME */
+
+.answersContainer {
+    display: flex;
+    width: 600px;
+    flex-wrap: wrap;
+    padding: 20px 0;
+    justify-content: space-between
+}
+
+.answer {
+    background: white;
+    padding: 15px;
+    width:49%;
+    font-family: 'Russo One', sans-serif;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 40px;
+    font-family: 'Russo One', sans-serif;
+    width: 600px;
+    line-height: 24px;
+    position: relative;
+}
+
+.scoreContainer {
+    /* background: white; */
+    width: 100%;
+    display: flex;
+    user-select: none;
+    font-family: 'Russo One', sans-serif;
+}
+
+.scoreContainer p {
+    font-size: 12px;
+}
+
+.playerScoreContainer {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    /* border-right: 2px solid #f1f1f1; */
+    margin-right: 10px;
+    background: white;
+}
+
+.playerInfoContainer {
+    background: #f1f1f1;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    align-items: center;
+    font-size: 25px;
+    width: 125px;
+}
+
+.scoreContainer {
+    /* background: blue; */
+    font-size: 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.robotScoreContainer {
+    background: white;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    /* border-left: 2px solid #f1f1f1; */
+    margin-left: 10px;
+}

@@ -1,0 +1,9 @@
+.timer {
+    padding: 15px;
+    font-size: 48px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    color: white;
+    font-family: 'Russo One', sans-serif;
+}

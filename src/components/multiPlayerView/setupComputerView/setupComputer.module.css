@@ -1,0 +1,77 @@
+.title {
+    font-size: 48px;
+    margin-bottom: 50px;
+    font-family: 'Russo One', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.buttonTwo {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    background: black;
+    color: white;
+}
+
+.smallTitle {
+    font-family: 'Russo One', sans-serif;
+    color: white;
+    letter-spacing: 2px;
+    font-weight: 400;
+}
+
+.setupContainer {
+    background: #f1f1f1;
+    user-select: none;
+    width: 300px;
+    border-radius: 4px;
+    padding: 1px;
+}
+
+.imageContainer {
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+    /* background: white; */
+}
+
+.nameContainer {
+    background: white;
+    font-family: 'Russo One', sans-serif;
+    text-align: center;
+    padding: 15px;
+    text-transform: uppercase;
+}
+
+.nameContainer h2 {
+    color: black;
+}
+
+.skillLevelContainer {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px 15px 15px;
+}
+
+.skillLevelButton {
+    font-family: 'Russo One', sans-serif;
+    background: #f1f1f1;
+    color: #ccc;
+    margin-bottom: 5px;
+    padding: 15px 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.selectedSkill {
+    background: #fff0f0;
+    color: #ff0000;
+    border: 1px solid #ff0000;
+}

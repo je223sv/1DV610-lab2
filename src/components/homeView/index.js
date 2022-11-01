@@ -1,5 +1,6 @@
 import React from 'react'
 import SinglePlayerView from '../singlePlayerView/index.js'
+import MultiPlayerView from '../multiPlayerView/index.js'
 import styles from './home.module.css'
 import { ImHome3 } from 'react-icons/im'
 
@@ -48,6 +49,8 @@ class HomeView extends React.Component {
                 return this.renderHomeView()
             case 'single-player':
                 return <SinglePlayerView />
+            case 'multi-player':
+                return <MultiPlayerView />
             default:
                 return null
         }
