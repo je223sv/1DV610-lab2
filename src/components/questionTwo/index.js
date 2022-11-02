@@ -21,7 +21,12 @@ const questionsByCategory = {
 class QuestionTwo extends React.Component {
     constructor(props) {
         super(props)
-        this.categoriesUsed = [] // data I don't want to rerender component when updated..
+
+        this.TIME_DELAY_IN_MS = 1500
+        this.secondsToAnswer = 10
+        this.fakePerson = new FakePerson()
+        this.currentCategory = null
+        this.categoriesUsed = []
         this.usedQuestionsById = {
             history: [],
             sports: [],
@@ -30,23 +35,16 @@ class QuestionTwo extends React.Component {
             scienceAndNature: [],
             entertainment: []
         }
-        this.computerAnswer = null
         this.blacklistCategories = []
         this.state = {
-            inEvaluation: false,
             question: null,
             showCategory: true,
             showAnswer: false,
-            // showOptions: false
-            seconds: 4,
-            players: { // pass as props later..
-                player: {
-                    currentAnswer: null
-                },
-                robot: {
-                    currentAnswer: null
-                }
-            },
+            seconds: this.secondsToAnswer,
+            currentAnswers: {
+                player: null,
+                computer: null
+            }
         }
     }
 
@@ -54,27 +52,16 @@ class QuestionTwo extends React.Component {
         this.generateQuestion()
     }
 
-    componentDidUpdate = async (prevProps, prevState) => {
-        if ((prevState.seconds !== this.state.seconds) && this.state.seconds === 0) {
-            // console.log("FIRST")
-
-            // Computer answer here..
-            const {options, correctAnswer} = this.state.question
-            const skillLevel = this.props.players.robot.skillLevel 
-            const answer = new FakePerson().answerQuizQuestion({options, correctAnswer}, skillLevel)
-
-            this.setState(prevState => ({
-                ...prevState,
-                players: { ...prevState.players, robot: { currentAnswer: answer } }
-            }))
+    componentDidUpdate = async (_, prevState) => {
+        if (this.timeHasHitZero(prevState)) {
+            this.setComputerAnswer()
         }
 
-        if ((prevState.players !== this.state.players) && this.state.players.robot.currentAnswer) {
-            // console.log("SECOND")
+        if (this.computerHasAnswered(prevState)) {
+            // Reference..
+            await new Promise(r => setTimeout(r, this.TIME_DELAY_IN_MS))
 
-            await new Promise(r => setTimeout(r, 1500))
-
-            this.evaluateResult()
+            this.evaluateAnswers()
 
             this.setState(prevState => ({
                 ...prevState,
@@ -82,15 +69,10 @@ class QuestionTwo extends React.Component {
             }))
         }
 
-        if ((prevState.showAnswer !== this.state.showAnswer) && this.state.showAnswer) {
-            // console.log("THIRD")
+        if (this.answerHasBeenShown(prevState)) {
+            await new Promise(r => setTimeout(r, this.TIME_DELAY_IN_MS))
 
-            await new Promise(r => setTimeout(r, 1500))
-
-            const playerLives = this.props.players.player.lives
-            const computerLives = this.props.players.robot.lives
-
-            if (playerLives === 0 || computerLives === 0) {
+            if (this.playerOrRobotHasNoMoreLives()) {
                 this.props.handleView('result')
             } else {
                 this.generateQuestion()
@@ -98,59 +80,115 @@ class QuestionTwo extends React.Component {
         }
     }
 
+    playerOrRobotHasNoMoreLives = () => {
+        const { player, robot } = this.props.players
+
+        const playerLives = player.lives
+        const computerLives = robot.lives
+
+        return playerLives === 0 || computerLives === 0
+    }
+
+    timeHasHitZero = (prevState) => {
+        return (prevState.seconds !== this.state.seconds) && this.state.seconds === 0
+    }
+
+    setComputerAnswer = () => {
+        const { options, correctAnswer } = this.state.question
+        const skillLevel = this.props.players.robot.skillLevel 
+        const answer = this.fakePerson.answerQuizQuestion({options, correctAnswer}, skillLevel)
+
+        this.setState(prevState => ({
+            ...prevState,
+            currentAnswers: { ...prevState.currentAnswers, computer: answer }
+        }))
+    }
+
+    computerHasAnswered = (prevState) => {
+        return (prevState.currentAnswers !== this.state.currentAnswers) && this.state.currentAnswers.computer
+    }
+
+    answerHasBeenShown = (prevState) => {
+        return (prevState.showAnswer !== this.state.showAnswer) && this.state.showAnswer
+    }
+
     generateQuestion = () => {
-        /* Decide categories to choose from */
+        const availableCategories = this.getAvailableCategories()
 
-        const {categories} = this.props // categories object
-        const selectedCategories = Object.keys(categories).filter(category => categories[category].isChoosen)
-        const availableCategories = selectedCategories.filter(category => !this.blacklistCategories.includes(category))
-
-        // QUIT IT.. no more questions..
-        if (availableCategories.length < 1) {
-            console.log("No more categories with questions left!!")
+        if (this.noAvailableCategories(availableCategories)) {
             this.props.handleView('result')
             return
         }
 
-        // ELSE pick a category
+        const category = this.getRandomCategory(availableCategories)
+        const question = this.getRandomQuestion(category)
+
+        this.blacklistCategoryIfNoMoreQuestions(category)
+        
+        this.setQuestion(question)
+    }
+
+    noAvailableCategories = (availableCategories) => {
+        return availableCategories.length < 1
+    }
+
+    getAvailableCategories = () => {
+        const {categories} = this.props
+        const selectedCategories = Object.keys(categories).filter(category => categories[category].isChoosen)
+        const availableCategories = selectedCategories.filter(category => !this.blacklistCategories.includes(category))
+
+        return availableCategories
+    }
+
+    getRandomCategory = (categories) => {
         let category
 
-        if (availableCategories.length < 2) { // update the library.. more user friendly.. user do not need to check size of array..
-            category = availableCategories[0]
+        // Update when library is updated!
+        if (categories.length < 2) {
+            category = categories[0]
         } else {
-            category = new FakePerson().makeSelection(availableCategories) // choose a random category..
+            category = this.fakePerson.makeSelection(categories)
         }
 
-        // Choose question
+        this.currentCategory = category
+
+        return category
+    }
+
+    getRandomQuestion = (category) => {
         let question
 
         do {
-            question = new FakePerson().makeSelection(questionsByCategory[category])
+            question = this.fakePerson.makeSelection(questionsByCategory[category])
         } while (this.usedQuestionsById[category].includes(question.id))
 
-        // Define question as used
         this.usedQuestionsById[category].push(question.id)
 
-        // If category has no more questions.. add to blacklist..
+        return question
+    }
+
+    blacklistCategoryIfNoMoreQuestions = (category) => {
         if (this.usedQuestionsById[category].length >= questionsByCategory[category].length) {
             this.blacklistCategories.push(category)
         }
+    }
 
+    setQuestion = (question) => {
         this.setState(prevState => ({
             ...prevState,
             question: question,
-            players: { player: { currentAnswer: null }, robot: { currentAnswer: null }},
+            currentAnswers: { player : null, computer: null },
             showAnswer: false,
-            seconds: 4, // from parent compoent instead?
+            seconds: this.secondsToAnswer
         }))
     }
 
-    evaluateResult = () => {
-        const {currentAnswer} = this.state.players.player
+    evaluateAnswers = () => {
         const {correctAnswer} = this.state.question
-        const computerAnswer = this.state.players.robot.currentAnswer
+        const playerAnswer = this.state.currentAnswers.player
+        const computerAnswer = this.state.currentAnswers.computer
 
-        let playerIsRight = currentAnswer === correctAnswer
+        let playerIsRight = playerAnswer === correctAnswer
         let computerIsRight = computerAnswer === correctAnswer
 
         this.props.handleScores(playerIsRight, computerIsRight)
@@ -170,17 +208,26 @@ class QuestionTwo extends React.Component {
 
         this.setState(prevState => ({
             ...prevState,
-            players: { ...prevState.players, player: { ...prevState.players.player, currentAnswer: option } }
+            currentAnswers: { ...prevState.currentAnswers, player: option }
         }))
     }
 
     renderQuestion = () => {
-        const {text, options } = this.state.question
+        const { text, options } = this.state.question
 
         return (
             <div>
                 <Timer handleUpdateSeconds={this.handleUpdateSeconds} seconds={this.state.seconds} />
-                <div className={styles.card}><span className={styles.tag}>{this.state.category}</span>{text}</div>
+
+                <div className={styles.cardContainer}>
+                    <div className={`${styles.categoryContainer} ${styles[this.currentCategory]}`}>
+                        <p>{this.currentCategory}</p>
+                    </div>
+                    <div className={styles.textContainer}>
+                        {text}
+                    </div>
+                    
+                </div>
                 <div className={styles.answersContainer}>
                     {this.renderOptions(options)}
                 </div>
@@ -191,8 +238,7 @@ class QuestionTwo extends React.Component {
     renderOptions = (options) => {
         return options.map(option => (
             <div 
-                // onClick={this.props.currentAnswer ? null : this.props.handleAnswer}
-                onClick={this.state.players.player.currentAnswer ? null : () => this.handleAnswer(option)}
+                onClick={this.state.currentAnswers.player ? null : () => this.handleAnswer(option)}
                 className={`${styles.answer} ${this.showCorrectStyles(option)}`}
             >
                 <p>{option}</p>
@@ -205,11 +251,11 @@ class QuestionTwo extends React.Component {
     }
 
     renderPlayerSelect = (option) => {
-        if (!this.state.players.player.currentAnswer) {
+        if (!this.state.currentAnswers.player) {
             return
         }
 
-        if (option === this.state.players.player.currentAnswer) {
+        if (option === this.state.currentAnswers.player) {
             return <span>{this.props.players.player.image}</span>
         } else {
             return
@@ -217,9 +263,9 @@ class QuestionTwo extends React.Component {
     }
 
     renderComputerSelect = (option) => {
-        if (!this.state.players.robot.currentAnswer) return
+        if (!this.state.currentAnswers.computer) return
 
-        if (option === this.state.players.robot.currentAnswer) {
+        if (option === this.state.currentAnswers.computer) {
             return <span>{this.props.players.robot.image}</span>
         } else {
             return
@@ -234,34 +280,15 @@ class QuestionTwo extends React.Component {
         )
     }
 
-    showWrongStyles = (option) => {
-        if (!this.state.players.player.currentAnswer) {
-            return false
-        }
-
-        if (this.state.players.player.currentAnswer === option && this.state.players.player.currentAnswer !== this.state.question.correctAnswer) {
-            return styles.wrong
-        }
-    }
-
     showCorrectStyles = (option) => {
         if (this.state.showAnswer && option === this.state.question.correctAnswer) {
             return styles.correct
         } else {
             return
         }
-
-        // if (!this.state.players.player.currentAnswer) {
-        //     return
-        // }
-
-        // if (this.state.question.correctAnswer === option) {
-        //     return styles.correct
-        // }
     }
 
     render = () => {
-        // return this.state.showCategory ? this.renderCategory() : (this.state.question ? this.renderQuestion() : 'loading..')
         return this.state.question ? this.renderQuestion() : 'loading..'
     }
 }
