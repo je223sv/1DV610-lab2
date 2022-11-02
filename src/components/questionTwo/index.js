@@ -1,150 +1,159 @@
 import React from 'react'
 import Timer from '../timer/index.js'
 import styles from './question.module.css'
-import fakePerson from 'fake-person'
 import FakePerson from 'fake-person'
+import entertainmentQuestions from '../../questions/entertainment.js'
+import geographyQuestions from '../../questions/geography.js'
+import historyQuestions from '../../questions/history.js'
+import programmingQuestions from '../../questions/programming.js'
+import scienceAndNatureQuestions from '../../questions/scienceAndNature.js'
+import sportsQuestions from '../../questions/sports.js'
 
-// TODO: Make question work for single and multiplayer!!!
-// showOptions, and write out question might be overkill.. (Could add these afterwards..)
-
-// Evaluate answer based on timer ending; or after an answer..
-
-// Unique render for each <Question /> called..
-
-// Question should be updated from here... when one question is done.. (and has been reported to the parent component)
+const questionsByCategory = {
+    history: historyQuestions,
+    entertainment: entertainmentQuestions,
+    sports: sportsQuestions,
+    programming: programmingQuestions,
+    'science and nature': scienceAndNatureQuestions,
+    geography: geographyQuestions
+}
 
 class QuestionTwo extends React.Component {
     constructor(props) {
         super(props)
+        this.categoriesUsed = [] // data I don't want to rerender component when updated..
+        this.usedQuestionsById = {
+            history: [],
+            sports: [],
+            geography: [],
+            programming: [],
+            scienceAndNature: [],
+            entertainment: []
+        }
+        this.computerAnswer = null
+        this.blacklistCategories = []
         this.state = {
-            // question: null,
+            inEvaluation: false,
             question: null,
             showCategory: true,
             showAnswer: false,
             // showOptions: false
-            seconds: 10,
+            seconds: 4,
             players: { // pass as props later..
                 player: {
                     currentAnswer: null
+                },
+                robot: {
+                    currentAnswer: null
                 }
-            }
+            },
         }
     }
-
 
     componentDidMount = () => {
         this.generateQuestion()
     }
 
-    // componentDidMount = async () => {
-    //     // doesn't matter how long it takes, will always be linear, unless it is a promise right?
-    //     // this.generateQuestion()
-    //     this.generateQuestion()
-
-    //     await new Promise(r => setTimeout(r, 1500));
-
-    //     this.setState(prevState => ({
-    //         ...prevState,
-    //         showCategory: false
-    //     }))
-    // }
-
-    // componentDidUpdate = async (prevProps, prevState) => {
-    //     // Show options later..
-    //     if (prevState.showCategory !== this.state.showCategory) {
-    //         if (this.state.showCategory) {
-    //             return 
-    //         }
-
-    //         await new Promise(r => setTimeout(r, 1500));
-
-    //         this.setState(prevState => ({
-    //             ...prevState,
-    //             showOptions: true
-    //         }))
-    //     }
-    // }
-
-    // handleAnswers = () => {
-
-
-    //     // Return where I keep scores..
-    //     // { playerCorrect: true }
-
-    // }
-
-    // generateQuestion = () => {
-    //     this.setState(prevState => ({
-    //         ...prevState,
-    //         question: {
-    //             text: 'What is the capital of Sweden?',
-    //             options: ['Stockholm', 'Oslo', 'Helsinki',' Copenhagen'],
-    //             correctAnswer: 'Stockholm'
-    //         }
-    //     }))
-    // }
-
-
     componentDidUpdate = async (prevProps, prevState) => {
-        if (this.state.seconds === 0) {
-            await new Promise(r => setTimeout(r, 1500));
+        if ((prevState.seconds !== this.state.seconds) && this.state.seconds === 0) {
+            // console.log("FIRST")
+
+            // Computer answer here..
+            const {options, correctAnswer} = this.state.question
+            const skillLevel = this.props.players.robot.skillLevel 
+            const answer = new FakePerson().answerQuizQuestion({options, correctAnswer}, skillLevel)
+
+            this.setState(prevState => ({
+                ...prevState,
+                players: { ...prevState.players, robot: { currentAnswer: answer } }
+            }))
+        }
+
+        if ((prevState.players !== this.state.players) && this.state.players.robot.currentAnswer) {
+            // console.log("SECOND")
+
+            await new Promise(r => setTimeout(r, 1500))
 
             this.evaluateResult()
 
-            if (this.state.seconds !== prevState.seconds) {
-                this.setState(prevState => ({
-                    ...prevState,
-                    showAnswer: true
-                }))
-            }
+            this.setState(prevState => ({
+                ...prevState,
+                showAnswer: true
+            }))
         }
 
-        if (this.state.showAnswer !== prevState.showAnswer) {
-            // End of the component.. call hook from parent; so it can change the question..
-            this.props.handleQuestionAnswered()
+        if ((prevState.showAnswer !== this.state.showAnswer) && this.state.showAnswer) {
+            // console.log("THIRD")
 
-            // new question..
-            this.generateQuestion()
+            await new Promise(r => setTimeout(r, 1500))
+
+            const playerLives = this.props.players.player.lives
+            const computerLives = this.props.players.robot.lives
+
+            if (playerLives === 0 || computerLives === 0) {
+                this.props.handleView('result')
+            } else {
+                this.generateQuestion()
+            }
         }
     }
 
     generateQuestion = () => {
-        const questions = [
-            { id: 1, text: 'Who saw a falling apple and later came up with the law of gravity?', options: ['Albert Einstein', 'Michael Faraday', 'Isaac Newton', 'Nicolaus Copernicus'], correctAnswer: 'Isaac Newton' },
-            { id: 2, text: 'Who came up with the special theory of relativity', options: ['Isaac Newton', 'Albert Einstein', 'Stephen Hawking', 'Alexander Fleming'], correctAnswer: 'Albert Einstein' },
-            { id: 3, text: 'What is the largest bone in the human body?', options: ['Femur', 'Tibia', 'Fibula', 'Humerus'], correctAnswer: 'Femur' },
-            { id: 4, text: 'What is the largest planet in our solar system?', options: ['Saturn', 'Earth', 'Mars', 'Jupiter'], correctAnswer: 'Jupiter' },
-            { id: 5, text: 'What is the smallest planet in our solar system?', options: ['Earth', 'Mercury', 'Mars', 'Neptune'], correctAnswer: 'Mercury' },
-            { id: 6, text: 'What was the name of Pierre Curie\'s wife which he and Henri Becquerel shared the noble prize with in physics 1903?', options: ['Lena', 'Petra', 'Eva', 'Marie'], correctAnswer: 'Marie' },
-            { id: 7, text: 'Who invented the first alternating current (AC) motor?', options: ['Thomas Edison', 'Nikola Tesla', 'George Westinghouse', 'J.P Morgan'], correctAnswer: 'Nikola Tesla' },
-            { id: 8, text: 'What checmial element is represented by the symbol L', options: ['Lutetium', 'Lithium', 'Lead', 'Lanthanum'], correctAnswer: 'Lithium' },
-            { id: 9, text: 'What is the biggest shark?', options: ['Great White Shark', 'Tiger Shark', 'Whale Shark', 'Megamouth Shark'], correctAnswer: 'Whale Shark' },
-            { id: 10, text: 'What checmial element is represented by the symbol N', options: ['Nitrogen', 'Neon', 'Nickel', 'Nobelium'], correctAnswer: 'Nitrogen' }
-        ]
+        /* Decide categories to choose from */
 
+        const {categories} = this.props // categories object
+        const selectedCategories = Object.keys(categories).filter(category => categories[category].isChoosen)
+        const availableCategories = selectedCategories.filter(category => !this.blacklistCategories.includes(category))
 
-        const q = new FakePerson().makeSelection(questions)
+        // QUIT IT.. no more questions..
+        if (availableCategories.length < 1) {
+            console.log("No more categories with questions left!!")
+            this.props.handleView('result')
+            return
+        }
 
+        // ELSE pick a category
+        let category
+
+        if (availableCategories.length < 2) { // update the library.. more user friendly.. user do not need to check size of array..
+            category = availableCategories[0]
+        } else {
+            category = new FakePerson().makeSelection(availableCategories) // choose a random category..
+        }
+
+        // Choose question
+        let question
+
+        do {
+            question = new FakePerson().makeSelection(questionsByCategory[category])
+        } while (this.usedQuestionsById[category].includes(question.id))
+
+        // Define question as used
+        this.usedQuestionsById[category].push(question.id)
+
+        // If category has no more questions.. add to blacklist..
+        if (this.usedQuestionsById[category].length >= questionsByCategory[category].length) {
+            this.blacklistCategories.push(category)
+        }
 
         this.setState(prevState => ({
             ...prevState,
-            question: q,
-            players: { ...prevState.players, player: {...prevState.player, currentAnswer: null }},
+            question: question,
+            players: { player: { currentAnswer: null }, robot: { currentAnswer: null }},
             showAnswer: false,
-            seconds: 10
+            seconds: 4, // from parent compoent instead?
         }))
     }
 
     evaluateResult = () => {
         const {currentAnswer} = this.state.players.player
         const {correctAnswer} = this.state.question
+        const computerAnswer = this.state.players.robot.currentAnswer
 
-        if (currentAnswer === correctAnswer) {
-            console.log("You were correct")
-        } else {
-            console.log("You were incorrect")
-        }
+        let playerIsRight = currentAnswer === correctAnswer
+        let computerIsRight = computerAnswer === correctAnswer
 
+        this.props.handleScores(playerIsRight, computerIsRight)
     }
 
     handleUpdateSeconds = () => {
@@ -161,7 +170,7 @@ class QuestionTwo extends React.Component {
 
         this.setState(prevState => ({
             ...prevState,
-            players: { ...prevState.players, player: { ...prevState.players.player, currentAnswer: option }}
+            players: { ...prevState.players, player: { ...prevState.players.player, currentAnswer: option } }
         }))
     }
 
@@ -187,7 +196,10 @@ class QuestionTwo extends React.Component {
                 className={`${styles.answer} ${this.showCorrectStyles(option)}`}
             >
                 <p>{option}</p>
-                {this.renderPlayerSelect(option)}
+                <div>
+                    {this.renderPlayerSelect(option)}
+                    {this.renderComputerSelect(option)}
+                </div>
             </div>
         ))
     }
@@ -198,7 +210,17 @@ class QuestionTwo extends React.Component {
         }
 
         if (option === this.state.players.player.currentAnswer) {
-            return <span>👩‍🦳</span>
+            return <span>{this.props.players.player.image}</span>
+        } else {
+            return
+        }
+    }
+
+    renderComputerSelect = (option) => {
+        if (!this.state.players.robot.currentAnswer) return
+
+        if (option === this.state.players.robot.currentAnswer) {
+            return <span>{this.props.players.robot.image}</span>
         } else {
             return
         }

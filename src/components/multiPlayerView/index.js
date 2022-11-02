@@ -1,11 +1,10 @@
 import React from 'react'
-import styles from './index.module.css'
 import FakePerson from 'fake-person'
-import { FaLightbulb, FaRegLightbulb } from "react-icons/fa";
 import SetupPlayerView from './setupPlayerView';
 import SetupComputerView from './setupComputerView';
 import SelectCategoryView from './selectCategoryView';
 import GameView from './gameView';
+import ResultView from './resultView';
 
 
 class MultiPlayerView extends React.Component {
@@ -15,10 +14,9 @@ class MultiPlayerView extends React.Component {
         this.fakePerson = new FakePerson()
         this.state = {
             view: 'setup-player',
-            skillLevel: 'average',
             players: {
-                player: {image: this.images[0], name: 'YOU'},
-                robot: { image: '🤖', name: this.fakePerson.getFirstName(), skillLevel: 'average'}
+                player: { image: this.images[0], name: 'YOU', lives: 3 },
+                robot: { image: '🤖', name: this.fakePerson.getFirstName(), skillLevel: 'average', lives: 3 }
             },
             categories: { 
                 history: { isChoosen: false, name: 'history', icon: '📜' },
@@ -29,7 +27,6 @@ class MultiPlayerView extends React.Component {
                 programming: { isChoosen: false, name: 'programming', icon: '🖥️' }
             },
             seconds: 10,
-            questionAnswered: 0
         }
     }
 
@@ -61,13 +58,6 @@ class MultiPlayerView extends React.Component {
         }))
     }
 
-    handleQuestionAnswered = () => {
-        this.setState(prevState => ({
-            ...prevState,
-            questionAnswered: prevState.questionAnswered + 1
-        }))
-    }
-
     handleSkillLevel = (skillLevel) => {
         this.setState(prevState => ({
             ...prevState,
@@ -89,6 +79,16 @@ class MultiPlayerView extends React.Component {
                 players: { ...prevState.players, player: { ...prevState.players.player, image: this.images[currentIndex + 1] } }
             }))
         }
+    }
+
+    handleScores = (playerIsRight, computerIsRight) => {
+        this.setState(prevState => ({
+            ...prevState,
+            players: {
+                player: { ...prevState.players.player, lives: playerIsRight ? prevState.players.player.lives : prevState.players.player.lives - 1 },
+                robot: { ...prevState.players.robot, lives: computerIsRight ? prevState.players.robot.lives : prevState.players.robot.lives - 1 },
+            }
+        }))
     }
 
     renderView = () => {
@@ -113,47 +113,18 @@ class MultiPlayerView extends React.Component {
                         />
             case 'start':
                 return <GameView
-                            questionAnswered={this.questionAnswered}
+                            categories={this.state.categories}
+                            players={this.state.players}
+                            handleScores={this.handleScores}
+                            handleView={this.handleView}
+                        />
+            case 'result':
+                return <ResultView
+                            players={this.state.players}
                         />
             default:
                 return null
         }
-    }
-
-    renderScore = () => {
-        return (
-            <div className={styles.scoreContainer}>
-                <div className={styles.playerScoreContainer}>
-                    <div className={styles.playerInfoContainer}>
-                        {this.state.players.player.image}
-                        <p>{this.state.players.player.name}</p>
-                    </div>
-                    <div className={styles.scoreContainer}>
-                        <FaLightbulb color="gold" />
-                        <FaLightbulb color="gold" />
-                        <FaLightbulb color="gold" />
-                        <FaLightbulb color="gold" />
-                        <FaRegLightbulb />
-                    </div>
-                </div>
-                <div className={styles.robotScoreContainer}>
-
-                    <div className={styles.scoreContainer}>
-                        <FaLightbulb color="gold" />
-                        <FaLightbulb color="gold" />
-                        <FaRegLightbulb />
-                        <FaRegLightbulb />
-                        <FaRegLightbulb />
-                    </div>
-
-                    <div className={styles.playerInfoContainer}>
-                        {this.state.players.robot.image}
-                        <p>{this.state.players.robot.name}</p>
-                    </div>
-                    
-                </div>
-            </div>
-        )
     }
 
     render() {

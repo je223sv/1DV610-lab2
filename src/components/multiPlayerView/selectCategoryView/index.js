@@ -10,7 +10,7 @@ class SelectCategoryView extends React.Component {
 
     renderButtons = () => {
         const categories = Object.keys(this.props.categories)
-        return categories.map((category => <button id={category} onClick={this.props.handleCategories} className={`${styles.button} ${ this.isChoosen(category) ? null : styles.notSelected}`}>{this.getCategory(category).name} {this.getCategory(category).icon}</button>))                                                    
+        return categories.map((category => <button id={category} onClick={this.props.handleCategories} className={`${styles.button} ${this.isChoosen(category) ? null : styles.notSelected}`}>{this.getCategory(category).name} {this.getCategory(category).icon}</button>))                                                    
     }
 
     getCategory = (name) => {
@@ -28,7 +28,6 @@ class SelectCategoryView extends React.Component {
     handleStart = () => {}
 
     hasCategoryBeenChoosen = () => {
-
         const {categories} = this.props
         const arr = Object.keys(categories)
 
@@ -50,7 +49,7 @@ class SelectCategoryView extends React.Component {
             <>
                 {this.renderStartButton()}
                 <h4 className={styles.smallTitle}>PLAYER VS COMPUTER</h4>
-                <h2 className={styles.title}>Choose Categories</h2>
+                <h2 className={styles.title}>Select Categories</h2>
                 <div className={styles.buttonContainer}>
                     {this.renderButtons()}
                 </div>
