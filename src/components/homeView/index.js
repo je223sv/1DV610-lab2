@@ -1,6 +1,6 @@
 import React from 'react'
-import SinglePlayerView from '../singlePlayerView/index.js'
-import MultiPlayerView from '../multiPlayerView/index.js'
+import SinglePlayer from '../singlePlayer/index.js'
+import MultiPlayer from '../multiplayer/index.js'
 import styles from './home.module.css'
 import { ImHome3 } from 'react-icons/im'
 
@@ -23,7 +23,7 @@ class HomeView extends React.Component {
                 <h2 className={styles.title}>Quiz Battle</h2>
                 <button className={styles.button} onClick={this.handleClick} id="single-player">Single Player</button>
                 <button className={styles.button} onClick={this.handleClick} id="multi-player">VS Computer</button>
-                <button className={styles.button} onClick={this.handleClick} id="statistics">Statistics</button>
+                {/* <button className={styles.button} onClick={this.handleClick} id="statistics">Statistics</button> */}
             </>
         )
     }
@@ -48,9 +48,10 @@ class HomeView extends React.Component {
             case 'home':
                 return this.renderHomeView()
             case 'single-player':
-                return <SinglePlayerView />
+                return <SinglePlayer />
             case 'multi-player':
-                return <MultiPlayerView />
+                // return <MultiPlayerView />
+                return <MultiPlayer />
             default:
                 return null
         }

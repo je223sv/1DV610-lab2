@@ -1,0 +1,155 @@
+/* .tag {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background: coral;
+    color: white;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: none;
+}
+
+.cardContainer {
+    background: white;
+    font-family: 'Russo One', sans-serif;
+    width: 600px;
+    line-height: 24px;
+    position: relative;
+}
+
+.textContainer {
+    padding: 25px;
+}
+
+.categoryContainer {
+    background: coral;
+    padding: 15px;
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.categoryCard {
+    background: mediumslateblue;
+    color: white;
+    text-align: center;
+    width: 600px;
+    padding: 40px;
+    border-radius: 8px;
+    font-family: 'Russo One', sans-serif;
+}
+
+.answersContainer {
+    display: flex;
+    width: 600px;
+    flex-wrap: wrap;
+    padding: 20px 0;
+    justify-content: space-between
+}
+
+.answer {
+    background: white;
+    padding: 15px;
+    width: 49%;
+    font-family: 'Russo One', sans-serif;
+    cursor: pointer;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.answer span {
+    line-height: 1.2;
+}
+
+.correct {
+    background: mediumseagreen;
+    color: white;
+}
+
+.wrong {
+    background: indianred;
+    color: white;
+}
+
+.programming {
+    background: black;
+}
+
+.history {
+    background: gold;
+}
+
+.entertainment {
+    background: pink;
+}
+
+.geography {
+    background: CornflowerBlue;
+}
+
+.scienceAndNature {
+    background: MediumSeaGreen;
+}
+
+.sport {
+    background: Coral;
+} */
+
+.gameContainer {
+    width: 600px;
+    /* background: pink; */
+}
+
+.timerContainer {
+    background: red;
+}
+
+.textContainer {
+    /* background: white; */
+    padding: 15px;
+    font-family: 'Russo One', sans-serif;
+    font-size: 32px;
+    color: white;
+    text-align: center;
+}
+
+.optionsContainer {
+    /* background: blue; */
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.option {
+    background: white;
+    color: black;
+    padding: 15px;
+    width: 49%;
+    margin-bottom: 15px;
+    border: 0;
+    cursor: pointer;
+    font-family: 'Russo One', sans-serif;
+    border-radius: 4px;
+}
+
+.category {
+    background: red;
+    color: white;
+    padding: 5px 15px;
+    font-size: 12px;
+}
+
+.correct {
+    background: mediumseagreen;
+    color: white;
+}
+
+.wrong {
+    background: indianred;
+    color: white;
+}

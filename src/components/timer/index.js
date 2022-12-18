@@ -2,10 +2,6 @@ import React from 'react'
 import styles from './timer.module.css'
 
 
-// Update seconds from parent component; so you can operate on it..
-// seconds, handleUpdateSeconds
-
-
 class Timer extends React.Component {
     constructor(props) {
         super(props)
@@ -39,7 +35,6 @@ class Timer extends React.Component {
     }
 
     render = () => {
-        // console.log("timer rendered")
         return <div className={styles.timer}>{this.props.seconds}</div>
     }
 
