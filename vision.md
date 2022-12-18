@@ -1,3 +1,3 @@
 # VISION
 
-My vision with this application is to provide a simple quiz game where users can challenge themselves or a computer at different difficulty levels.
+The vision of this web application is to provide a simple, fun, and user-friendly quiz game that can be played by a single user or against a computer opponent at different difficulty levels.
