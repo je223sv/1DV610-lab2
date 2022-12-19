@@ -16,7 +16,7 @@ class GameView extends React.Component {
     constructor (props) {
         super(props)
         this.TIME_DELAY_IN_MS = 1500
-        this.secondsToAnswer = 3
+        this.secondsToAnswer = 10
         this.fakePerson = new FakePerson()
         this.state = {
             currentQuestion: null,
@@ -60,7 +60,7 @@ class GameView extends React.Component {
 
     generateQuestion = () => {
         const category = this.getRandomCategory()
-        const question = this.fakePerson.makeSelection(this.state.questionsByCategory[category])
+        const question = this.fakePerson.makeSelectionFromArray(this.state.questionsByCategory[category])
 
         this.setQuestion(question, category)
         this.removeUsedQuestion(question.id, category)
@@ -75,7 +75,7 @@ class GameView extends React.Component {
             return
         }
         
-        return this.fakePerson.makeSelection(categoriesWithQuestionsLeft)
+        return this.fakePerson.makeSelectionFromArray(categoriesWithQuestionsLeft)
     }
 
     getCategoriesWithQuestionsLeft = () => {

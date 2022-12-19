@@ -63,7 +63,7 @@ class GameView extends React.Component {
             return
         }
 
-        return this.fakePerson.makeSelection(categoriesWithQuestionsLeft)
+        return this.fakePerson.makeSelectionFromArray(categoriesWithQuestionsLeft)
     }
 
     getCategoriesWithQuestionsLeft = () => {
@@ -92,7 +92,7 @@ class GameView extends React.Component {
     }
 
     getRandomQuestion = (category) => {
-        return this.fakePerson.makeSelection(this.state.questionsByCategory[category])
+        return this.fakePerson.makeSelectionFromArray(this.state.questionsByCategory[category])
     }
 
 
