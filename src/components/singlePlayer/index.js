@@ -1,5 +1,5 @@
 import React from 'react'
-import SelectCategories from './SelectCategories/index.js'
+import SelectCategories from '../selectCategories/index.js'
 import GameView from './GameView/index.js'
 import ResultView from './ResultView/index.js'
 

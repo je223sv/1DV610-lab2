@@ -4,7 +4,7 @@ import FakePerson from 'fake-person'
 // views
 import SetupPlayer from './setupPlayer/index.js'
 import SetupComputer from './setupComputer/index.js'
-import SelectCategories from './selectCategories/index.js'
+import SelectCategories from '../selectCategories/index.js'
 import GameView from './gameView/index.js'
 import ResultView from './resultView/index.js'
 
