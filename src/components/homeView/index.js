@@ -42,7 +42,7 @@ class HomeView extends React.Component {
                 </button>
     }
 
-    // Behave as a router for the application..
+    // Behave as a router for the application.
     renderView = () => {
         switch(this.state.currentView) {
             case 'home':
@@ -50,7 +50,6 @@ class HomeView extends React.Component {
             case 'single-player':
                 return <SinglePlayer />
             case 'multi-player':
-                // return <MultiPlayerView />
                 return <MultiPlayer />
             default:
                 return null

@@ -27,8 +27,14 @@ class MultiPlayer extends React.Component {
         this.setState(prevState => ({
             ...prevState,
             players: {
-                human: { ...prevState.players.human, lives: isHumanRight ? prevState.players.human.lives : prevState.players.human.lives - 1 },
-                computer: { ...prevState.players.computer, lives: isComputerRight ? prevState.players.computer.lives : prevState.players.computer.lives - 1 },
+                human: { 
+                    ...prevState.players.human,
+                    lives: isHumanRight ? prevState.players.human.lives : prevState.players.human.lives - 1
+                },
+                computer: {
+                    ...prevState.players.computer,
+                    lives: isComputerRight ? prevState.players.computer.lives : prevState.players.computer.lives - 1
+                },
             }
         }))
     }

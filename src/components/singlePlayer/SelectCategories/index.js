@@ -31,7 +31,6 @@ class SelectCategories extends React.Component {
     }
 
     handleStartGame = () => {
-        // When pressing the start button
         this.props.setCategories(this.state.categories)
         this.props.setView('game')
     }

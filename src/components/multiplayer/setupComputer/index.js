@@ -13,7 +13,6 @@ class SetupComputer extends React.Component {
             <>
                 <button className={styles.buttonTwo} onClick={() => this.props.setView('select-categories')}>Select Categories</button>
 
-                {/* <h4 className={styles.smallTitle}>PLAYER VS COMPUTER</h4> */}
                 <h2 className={styles.title}>Setup Computer</h2>
 
                 <div className={styles.setupContainer}>
