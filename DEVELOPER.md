@@ -22,7 +22,19 @@ Input:
 Output:
 
 - The home screen should have a title that says "Quiz Battle"
-- The home screen should have a button that says "Singleplayer"
+- The home screen should have a button that says "Single Player"
 - The home screen should have a button that says "Vs Computer"
 
+## UC2: Start a single player game
 
+Input:
+
+- UC1
+- Click on "Single Player"
+- Choose the "sports" category
+- click "start" in the top right corner
+
+Output:
+
+- The game should display a question from the sports category
+- There should be four options below the question
