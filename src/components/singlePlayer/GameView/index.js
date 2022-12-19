@@ -10,11 +10,16 @@ import programmingQuestions from '../../../questions/programming.js'
 import scienceAndNatureQuestions from '../../../questions/scienceAndNature.js'
 import sportsQuestions from '../../../questions/sports.js'
 
+
+// Can I move Question to it's own class? at least the presentation?? and all related functions??
+
+
 // Game view for single player mode
 class GameView extends React.Component {
     constructor (props) {
         super(props)
         this.TIME_DELAY_IN_MS = 1500
+        this.fakePerson = new FakePerson()
         this.state = {
             numOfQuestionsAsked: 0,
             currentQuestion: null,
@@ -35,18 +40,35 @@ class GameView extends React.Component {
         this.generateQuestion()
     }
 
-    componentDidUpdate = (prevProps, prevState) => {
-        // Evaluate answer when an answer is given (only want from null => answer, not answer => null)
-        if (this.state.currentAnswer !== null && prevState.currentAnswer !== this.state.currentAnswer) {
+    componentDidUpdate = async (prevProps, prevState) => {
+        if (this.hasAnswerBeenGiven(prevState)) {
             this.evaluateAnswer()
+
+            // Short pause before the next questions is generated so that the user can see the
+            // evaluated result.
+            await new Promise(r => setTimeout(r, this.TIME_DELAY_IN_MS))
+
+            this.generateQuestion()
         }
     }
 
-    handleAnswer = (event) => {        
-        this.setState(prevState => ({
-            ...prevState,
-            currentAnswer: event.target.innerText
-        }))
+    generateQuestion = () => {
+        const category = this.getRandomCategory()
+        const question = this.getRandomQuestion(category)
+        
+        this.setQuestion(question, category)
+        this.removeUsedQuestion(question.id, category)
+    }
+
+    getRandomCategory = () => {
+        const categoriesWithQuestionsLeft = this.getCategoriesWithQuestionsLeft()
+
+        if (this.hasReachedMaxQuestions() || categoriesWithQuestionsLeft.length === 0) {
+            this.props.setView('result')
+            return
+        }
+
+        return this.fakePerson.makeSelection(categoriesWithQuestionsLeft)
     }
 
     getCategoriesWithQuestionsLeft = () => {
@@ -62,51 +84,52 @@ class GameView extends React.Component {
         })
     }
 
-    hasCategoryAnyQuestionsLeft = (category) => {
-        return this.state.questionsByCategory[category].length > 0
-    }
-
     isCategoryChosen = (category) => {
         return this.props.categories[category].isChosen
     }
 
-    generateQuestion = () => {
-        const fakePerson = new FakePerson() 
-        const categoriesWithQuestionsLeft = this.getCategoriesWithQuestionsLeft()
+    hasCategoryAnyQuestionsLeft = (category) => {
+        return this.state.questionsByCategory[category].length > 0
+    }
 
-        if (this.state.numOfQuestionsAsked === this.props.numOfQuestions || categoriesWithQuestionsLeft.length === 0) {
-            this.props.setView('result')
-            return
-        }
-        
-        const category = fakePerson.makeSelection(categoriesWithQuestionsLeft) // error if only one category.. update lib..
-        const question = fakePerson.makeSelection(this.state.questionsByCategory[category]) // error if only one question left in category..
+    hasReachedMaxQuestions = () => {
+        return this.state.numOfQuestionsAsked === this.props.numOfQuestions
+    }
 
-        // Set the current question..
+    getRandomQuestion = (category) => {
+        return this.fakePerson.makeSelection(this.state.questionsByCategory[category])
+    }
+
+
+    setQuestion = (question, category) => {
         this.setState(prevState => ({
             ...prevState,
             currentQuestion: { ...question, category: category},
             currentAnswer: null,
             numOfQuestionsAsked: prevState.numOfQuestionsAsked + 1
         }))
-
-        // remove questions!!!
-        this.removeQuestion(question.id, category)
     }
 
-    removeQuestion = (id, category) => {
+    removeUsedQuestion = (id, category) => {
         const index = this.state.questionsByCategory[category].findIndex(question => question.id === id)
         this.state.questionsByCategory[category].splice(index, 1)
+    }
+
+    hasAnswerBeenGiven = (prevState) => {
+        return this.state.currentAnswer !== null && prevState.currentAnswer !== this.state.currentAnswer
+    }
+
+    handleAnswer = (event) => {        
+        this.setState(prevState => ({
+            ...prevState,
+            currentAnswer: event.target.innerText
+        }))
     }
 
     evaluateAnswer = async () => {
         if (this.isCorrectAnswer()) {
             this.props.incrementScore()
         }
-
-        await new Promise(r => setTimeout(r, this.TIME_DELAY_IN_MS))
-
-        this.generateQuestion()
     }
 
     isCorrectAnswer = () => {
@@ -152,10 +175,15 @@ class GameView extends React.Component {
             return styles.correct
         }
 
-        // When answering wrong
-        if (option === currentAnswer && currentAnswer !== correctAnswer) {
+        if (this.isWrongAnswer(option)) {
             return styles.wrong
         }
+    }
+
+    isWrongAnswer = (option) => {
+        const {currentAnswer} = this.state
+        const {correctAnswer} = this.state.currentQuestion
+        return option === currentAnswer && currentAnswer !== correctAnswer
     }
 
     renderScore = () => {

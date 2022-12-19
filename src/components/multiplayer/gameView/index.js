@@ -12,17 +12,6 @@ import programmingQuestions from '../../../questions/programming.js'
 import scienceAndNatureQuestions from '../../../questions/scienceAndNature.js'
 import sportsQuestions from '../../../questions/sports.js'
 
-// Mapper
-const questionsByCategory = {
-    'history': [ ...historyQuestions ],
-    'sports': [ ...sportsQuestions ],
-    'geography': [ ...geographyQuestions ],
-    'entertainment': [ ...entertainmentQuestions ],
-    'scienceAndNature': [ ...scienceAndNatureQuestions ],
-    'programming': [ ...programmingQuestions ],
-    // literature... cause error..
-}
-
 // Game view for single player mode
 class GameView extends React.Component {
     constructor (props) {
@@ -36,7 +25,16 @@ class GameView extends React.Component {
                 human: null,
                 computer: null
             },
-            seconds: this.secondsToAnswer
+            seconds: this.secondsToAnswer,
+            questionsByCategory: {
+                'history': [ ...historyQuestions ],
+                'sports': [ ...sportsQuestions ],
+                'geography': [ ...geographyQuestions ],
+                'entertainment': [ ...entertainmentQuestions ],
+                'scienceAndNature': [ ...scienceAndNatureQuestions ],
+                'programming': [ ...programmingQuestions ],
+                // literature... cause error..
+            }
         }
     }
 
@@ -44,14 +42,76 @@ class GameView extends React.Component {
         this.generateQuestion()
     }
 
-    componentDidUpdate = (prevProps, prevState) => {
+    componentDidUpdate = async (prevProps, prevState) => {
         if (prevState.seconds !== this.state.seconds && this.state.seconds === 1) {
             this.setComputerAnswer()
         }
 
         if (prevState.currentAnswer.computer !== this.state.currentAnswer.computer && this.state.currentAnswer.computer) {
+            // Short pause before the answers are evaluated.
+            await new Promise(r => setTimeout(r, this.TIME_DELAY_IN_MS))
+
             this.evaluateAnswer()
+
+            // Short pause before the next questions is generated so that the user can see the
+            // evaluated result.
+            await new Promise(r => setTimeout(r, this.TIME_DELAY_IN_MS))
+
+            this.generateQuestion()
         }
+    }
+
+    generateQuestion = () => {
+        const category = this.getRandomCategory()
+        const question = this.fakePerson.makeSelection(this.state.questionsByCategory[category])
+
+        this.setQuestion(question, category)
+        this.removeUsedQuestion(question.id, category)
+    }
+
+    getRandomCategory = () => {
+        const categoriesWithQuestionsLeft = this.getCategoriesWithQuestionsLeft()
+
+        // Might refactor this conditional (not same as single player)
+        if (categoriesWithQuestionsLeft.length === 0 || this.props.players.human.lives === 0 || this.props.players.computer.lives === 0) {
+            this.props.setView('result')
+            return
+        }
+        
+        return this.fakePerson.makeSelection(categoriesWithQuestionsLeft)
+    }
+
+    getCategoriesWithQuestionsLeft = () => {
+        const { categories } = this.props
+        const categoryKeys = Object.keys(categories)
+
+        return categoryKeys.filter(category => {
+            return (
+              this.state.questionsByCategory[category] &&
+              this.isCategoryChosen(category) &&
+              this.hasCategoryAnyQuestionsLeft(category)
+            )
+        })
+    }
+
+    isCategoryChosen = (category) => {
+        return this.props.categories[category].isChosen
+    }
+
+    hasCategoryAnyQuestionsLeft = (category) => {
+        return this.state.questionsByCategory[category].length > 0
+    }
+
+    setQuestion = (question, category) => {
+        this.setState(prevState => ({
+            ...prevState,
+            currentQuestion: { ...question, category: category},
+            currentAnswer: {
+                human: null,
+                computer: null
+            },
+            seconds: this.secondsToAnswer   
+         }))
     }
 
     handleUpdateSeconds = () => {
@@ -79,62 +139,12 @@ class GameView extends React.Component {
         }))
     }
 
-    getCategoriesWithQuestionsLeft = () => {
-        const { categories } = this.props
-        const categoryKeys = Object.keys(categories)
-
-        return categoryKeys.filter(category => {
-            return (
-              questionsByCategory[category] &&
-              this.isCategoryChosen(category) &&
-              this.hasCategoryAnyQuestionsLeft(category)
-            )
-        })
-    }
-
-    hasCategoryAnyQuestionsLeft = (category) => {
-        return questionsByCategory[category].length > 0
-    }
-
-    isCategoryChosen = (category) => {
-        return this.props.categories[category].isChosen
-    }
-
-    generateQuestion = () => {
-        const categoriesWithQuestionsLeft = this.getCategoriesWithQuestionsLeft()
-
-        if (categoriesWithQuestionsLeft.length === 0 || this.props.players.human.lives === 0 || this.props.players.computer.lives === 0) {
-            this.props.setView('result')
-            return
-        }
-        
-        const category = this.fakePerson.makeSelection(categoriesWithQuestionsLeft) // error if only one category.. update lib..
-        const question = this.fakePerson.makeSelection(questionsByCategory[category]) // error if only one question left in category..
-
-        // Set the current question..
-        this.setState(prevState => ({
-            ...prevState,
-            currentQuestion: { ...question, category: category},
-            currentAnswer: {
-                human: null,
-                computer: null
-            },
-            seconds: this.secondsToAnswer   
-         }))
-
-        // Remove questions!!! (to avoid it from being asked again)
-        this.removeQuestion(question.id, category)
-    }
-
-    removeQuestion = (id, category) => {
-        const index = questionsByCategory[category].findIndex(question => question.id === id)
-        questionsByCategory[category].splice(index, 1)
+    removeUsedQuestion = (id, category) => {
+        const index = this.state.questionsByCategory[category].findIndex(question => question.id === id)
+        this.state.questionsByCategory[category].splice(index, 1)
     }
 
     evaluateAnswer = async () => {
-        // reference source
-        await new Promise(r => setTimeout(r, this.TIME_DELAY_IN_MS))
-
         const { correctAnswer } = this.state.currentQuestion
         const humanAnswer = this.state.currentAnswer.human
         const computerAnswer = this.state.currentAnswer.computer
@@ -143,10 +153,6 @@ class GameView extends React.Component {
         let isComputerRight = computerAnswer === correctAnswer
 
         this.props.handleLives(isHumanRight, isComputerRight)
-
-        await new Promise(r => setTimeout(r, this.TIME_DELAY_IN_MS))
-
-        this.generateQuestion()
     }
 
     isCorrectAnswer = () => {
