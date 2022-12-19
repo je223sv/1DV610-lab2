@@ -38,3 +38,23 @@ Output:
 
 - The game should display a question from the sports category
 - There should be four options below the question
+
+## UC3: Start a multi player game
+
+Input:
+
+- UC1
+- Click on "Vs Computer"
+- Choose an image
+- Click on "setup computer"
+- Choose "EXPERT" as the skill level of the computer
+- Click on "Select Categories"
+- Choose the "sports" category
+- Click "start" in the top right corner
+
+Output:
+
+- The game should display a question from the sports category
+- There should be a timer ticking down from 10 seconds
+- There should be four options below the question
+- The player and the computer should have 3 lifes each
