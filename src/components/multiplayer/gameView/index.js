@@ -9,7 +9,6 @@ import entertainmentQuestions from '../../../questions/entertainment.js'
 import geographyQuestions from '../../../questions/geography.js'
 import historyQuestions from '../../../questions/history.js'
 import programmingQuestions from '../../../questions/programming.js'
-import scienceAndNatureQuestions from '../../../questions/scienceAndNature.js'
 import sportsQuestions from '../../../questions/sports.js'
 
 // Game view for single player mode
@@ -31,9 +30,7 @@ class GameView extends React.Component {
                 'sports': [ ...sportsQuestions ],
                 'geography': [ ...geographyQuestions ],
                 'entertainment': [ ...entertainmentQuestions ],
-                'scienceAndNature': [ ...scienceAndNatureQuestions ],
-                'programming': [ ...programmingQuestions ],
-                // literature... cause error..
+                'programming': [ ...programmingQuestions ]
             }
         }
     }
@@ -72,7 +69,7 @@ class GameView extends React.Component {
     getRandomCategory = () => {
         const categoriesWithQuestionsLeft = this.getCategoriesWithQuestionsLeft()
 
-        // Might refactor this conditional (not same as single player)
+        // TODO: Might refactor this conditional (not same as single player)
         if (categoriesWithQuestionsLeft.length === 0 || this.props.players.human.lives === 0 || this.props.players.computer.lives === 0) {
             this.props.setView('result')
             return

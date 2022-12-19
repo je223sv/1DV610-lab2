@@ -11,8 +11,6 @@ class SelectCategories extends React.Component {
                 history: { isChosen: false, name: 'history', icon: '📜' },
                 geography: { isChosen: false, name: 'geography', icon: '🌍' },
                 sports: { isChosen: false, name: 'sports', icon: '⚽' },
-                literature: { isChosen: false, name: 'literature', icon: '📚' },
-                scienceAndNature: { isChosen: false, name: 'science and nature', icon: '🧪' },
                 entertainment: { isChosen: false, name: 'entertainment', icon: '🎞️' },
                 programming: { isChosen: false, name: 'programming', icon: '🖥️' }
             }

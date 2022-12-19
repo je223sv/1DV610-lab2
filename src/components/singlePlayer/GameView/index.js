@@ -7,12 +7,9 @@ import entertainmentQuestions from '../../../questions/entertainment.js'
 import geographyQuestions from '../../../questions/geography.js'
 import historyQuestions from '../../../questions/history.js'
 import programmingQuestions from '../../../questions/programming.js'
-import scienceAndNatureQuestions from '../../../questions/scienceAndNature.js'
 import sportsQuestions from '../../../questions/sports.js'
 
-
 // Can I move Question to it's own class? at least the presentation?? and all related functions??
-
 
 // Game view for single player mode
 class GameView extends React.Component {
@@ -29,9 +26,7 @@ class GameView extends React.Component {
                 'sports': [ ...sportsQuestions ],
                 'geography': [ ...geographyQuestions ],
                 'entertainment': [ ...entertainmentQuestions ],
-                'scienceAndNature': [ ...scienceAndNatureQuestions ],
-                'programming': [ ...programmingQuestions ],
-                // literature... cause error..
+                'programming': [ ...programmingQuestions ]
             }
         }
     }
