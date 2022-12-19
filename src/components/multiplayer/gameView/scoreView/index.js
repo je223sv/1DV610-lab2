@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './scoreView.module.css'
-import { FaHeart, FaRegLightbulb } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 
 
 class ScoreView extends React.Component {
