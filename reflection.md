@@ -47,7 +47,7 @@ En annan regel är den om **Data Abstraction** som går ut på att dölja implem
 
 ## Chapter 7 - Error Handling
 
-
+Detta kapitel har inte haft någon påverkan på min kod eftersom applikationen är riktad mot användare och det inte existerar några input fält som måste valideras. Inte heller använder jag något API, så jag såg ingen anledning till att använda error handling.
 
 
 ## Chapter 8 - Boundaries
