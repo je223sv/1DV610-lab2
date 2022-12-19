@@ -59,7 +59,7 @@ Om jag däremot hade varit starkt beroende av ett extern "library" som jag inte 
 
 ## Chapter 9 - Unit Tests
 
-Då jag inte har några enhetstester för denna applikation, så har detta kapitel inte påverkat min kod nämnvärt.
+Då jag inte har några enhetstester för denna applikation, så har detta kapitel inte påverkat min kod nämnvärt. Även om detta kapitel inte har påverkat denna applikation, så erbjuder den bra regler som jag kommer att använda mig av i framtiden.
 
 
 ## Chapter 10 - Classes
