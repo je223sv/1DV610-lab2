@@ -2,6 +2,8 @@
 
 Challenge yourself or a beginner/average/expert computer in a game of Quiz.
 
+Visit the app at https://lucky-manatee-59fd3b.netlify.app/
+
 ## Play Singleplayer
 
 To play a singleplayer, simple click the "singleplayer" button from the home screen:
