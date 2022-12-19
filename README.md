@@ -6,7 +6,7 @@ Visit the app at https://lucky-manatee-59fd3b.netlify.app/
 
 ## Play Singleplayer
 
-To play a singleplayer, simple click the "singleplayer" button from the home screen:
+To play a singleplayer, simply click the "Single Player" button from the home screen:
 
 ![Place your file in this folder](/images/home.png)
 
@@ -19,7 +19,7 @@ Choose the correct answer to the question asked to score a point:
 
 ## Play Multiplayer
 
-To play multiplayer against a computer, simply click the "multiplayer" button from the home screen:
+To play multiplayer against a computer, simply click the "Vs Computer" button from the home screen:
 
 ![Place your file in this folder](/images/home-multiplayer.png)
 
