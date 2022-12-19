@@ -59,13 +59,22 @@ Om jag däremot hade varit starkt beroende av ett extern "library" som jag inte 
 
 ## Chapter 9 - Unit Tests
 
-Då jag inte har några enhetstester för denna applikation, så har detta kapitel inte påverkat min kod nämnvärt. 
+Då jag inte har några enhetstester för denna applikation, så har detta kapitel inte påverkat min kod nämnvärt.
 
 
 ## Chapter 10 - Classes
 
+I vanliga fall, så brukar man inte skriva klass komponenter i React. För denna applikation valde jag att göra det ändå eftersom det var ett av kraven. En regel som nämns är **Classes should be small** vilket är något jag försökt att följa. Med andra ord, så har jag valt att bryta upp stora komponenter till mindre, mer specifika komponenter som har "**a single responsibility**".
 
+Ett exempel på detta är **multiplayer** komponentent som jag delat upp i flera subkomponenter:
 
+![Place your file in this folder](/images/classes.png)
 
 ## Chapter 11 - Systems
 
+
+Från detta kapitel, så har jag lärt mig vikten av att skapa ett väl organiserat och "maintainable" system. Detta innebär att man skapar komponenter som är "cohesive" och löst kopplade där varje komponent har ett ansvar och ett väl-definierad gränssnitt. Genom att följa dessa råd, så kan man skapa ett system med komponenter som är enkla att testa samt enkla att byta ut utan att det påverkar resten av systemet.
+
+Jag har applicerat dessa principer så gott jag kan genom att bryta upp stora komponenter till mindre och mer specifika komponenter som har ett ansvar:
+
+![Place your file in this folder](/images/systems.png)
