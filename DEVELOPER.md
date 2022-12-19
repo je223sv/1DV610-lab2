@@ -10,6 +10,14 @@ The vision of this web application is to provide a simple, fun, and user-friendl
 
 # Test Cases
 
+## Testrapport
+
+| User cases| Testmetod | Status|       
+| --------- |:---------:|:-----:|
+| UC1      | Manuellt test   |✅ |
+| UC2    | Manuellt test   |✅ |
+| UC3    | Manuellt test   |✅ |
+
 ## UC1: Home screen
 
 Input:
