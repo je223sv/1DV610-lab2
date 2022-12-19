@@ -40,21 +40,30 @@ När det kommer till formattering, så är det främst "horizontal formatting" o
 
 ## Chapter 6 - Objects and Data Structures
 
+**The law of demeter** är en regel från detta kapitel som jag har försökt att följa så gott det bara går för att se till att mina komponenter är så "loosly coupled" som möjligt. Ska medge att denna regel är något förvirrande när man håller på med React komponenter, men eftersom att mina komponenter på sin höjd kommunicerar med sin parent genom att exekvera metoder som den mottagit via "props", så anser jag att denna regel följs. Det vill säga, komponenterna kommunicerar endast med sin närmsta granne.
+
+En annan regel är den om **Data Abstraction** som går ut på att dölja implementationen av en klass och istället exponera ett publikt gränssnitt som andra klasser kan använda. På så sätt blir inte andra klasser beroende av en specifik implementation som kan komma att ändras. När det kommer till klass komponenter i React, så finns det inget syfte i att göra "members" privata, då en klass komponent instansieras som en komponent och data och beteende kommuniceras via "properties" (props) som förs in som argument till komponenten. Det vill säga, det finns inget sätt att komma åt "members" i en klass komponent om denna instansieras som en komponent.
 
 
 ## Chapter 7 - Error Handling
 
 
 
+
 ## Chapter 8 - Boundaries
 
+Förutom att använda mitt egna "library" från lab 1, så har jag endast använt ett "library" för att visa en konfetti animation när spelaren vinner. Eftersom att detta "library" har minimal påverkan på systemet i helhet och jag har total kontroll över mitt egna "library", så har jag inte behövt använda några av de tips som nämns i kapitlet.
+
+Om jag däremot hade varit starkt beroende av ett extern "library" som jag inte själv skrivit, så hade jag övervägt att skriva ett gränssnit för detta "library" som jag själv har kontrollen över för att göra applikationen mer tålig för förändring.
 
 
 ## Chapter 9 - Unit Tests
 
+Då jag inte har några enhetstester för denna applikation, så har detta kapitel inte påverkat min kod nämnvärt. 
 
 
 ## Chapter 10 - Classes
+
 
 
 
