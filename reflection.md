@@ -28,6 +28,35 @@ Från detta kapitel, så har jag främst följt regeln om att **"Explain yoursel
 
 ![Place your file in this folder](/images/comments.png)
 
-Det finns inte bara dåliga kommenterar. Om intentionen är otydlig, så kan en kommentar vara bra vilket jag använd här:
+Det finns inte bara dåliga kommenterar. Om intentionen är otydlig, så kan en kommentar vara bra vilket jag nyttjat här:
 
 ![Place your file in this folder](/images/comments-2.png)
+
+## Chapter 5 - Formatting
+
+När det kommer till formattering, så är det främst "horizontal formatting" och "vertical formatting" som omnämns. Vid "horizontal formatting", så har jag försökt att inte ha för långa rader då det gör koden svårare att läsa. Ett exempel på det:
+
+![Place your file in this folder](/images/formatting.png)
+
+## Chapter 6 - Objects and Data Structures
+
+
+
+## Chapter 7 - Error Handling
+
+
+
+## Chapter 8 - Boundaries
+
+
+
+## Chapter 9 - Unit Tests
+
+
+
+## Chapter 10 - Classes
+
+
+
+## Chapter 11 - Systems
+
